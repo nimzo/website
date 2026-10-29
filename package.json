@@ -1,0 +1,13 @@
+{
+  "name": "nimzo-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site for Nimzo",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "npx --yes serve dist -l 3000"
+  },
+  "devDependencies": {
+    "html-minifier-terser": "7.2.0"
+  }
+}

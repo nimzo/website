@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nimzo | The operating system for cloud infrastructure</title>
+<meta name="description" content="Nimzo is the operating system for cloud infrastructure. Your best practices become deterministic checks that every change passes, whoever or whatever writes it.">
+<meta name="theme-color" content="#18181b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://nimzo.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nimzo | The operating system for cloud infrastructure">
+<meta property="og:description" content="Deterministic, automated, end to end. No matter who or what writes the code.">
+<meta property="og:image" content="https://nimzo.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:"Geist";font-style:normal;font-weight:300 600;font-display:swap;src:url(/fonts/geist-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/geist-mono-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* Layout: dark-first editorial page. One orange band carries the core idea; everything else stays quiet and left-aligned. */
+:root {
+  --bg: #18181b;
+  --bg-deep: #0f0f11;
+  --surface: #27272a;
+  --line: #3f3f46;
+  --fg: #fafafa;
+  --muted: #a1a1aa;
+  --accent: #e67445;
+  --accent-ink: #18181b;
+  --accent-soft: rgba(230,116,69,0.10);
+  --band: #e5632d;
+  --band-ink: #18181b;
+  --band-sub: #fafafa;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #fafafa; --bg-deep: #f1f1f2; --surface: #ffffff; --line: #d4d4d8;
+    --fg: #18181b; --muted: #52525b; --accent: #b8431a; --accent-ink: #ffffff;
+    --accent-soft: rgba(184,67,26,0.08); --band: #e5632d; --band-ink: #18181b; --band-sub: #ffffff;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #fafafa; --bg-deep: #f1f1f2; --surface: #ffffff; --line: #d4d4d8;
+  --fg: #18181b; --muted: #52525b; --accent: #b8431a; --accent-ink: #ffffff;
+  --accent-soft: rgba(184,67,26,0.08); --band: #e5632d; --band-ink: #18181b; --band-sub: #ffffff;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font-sans); font-size: 18px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+.wrap { max-width: 1160px; margin: 0 auto; }
+h1, h2, h3, p, ul { margin: 0; }
+h1, h2, h3 { text-wrap: balance; font-weight: 500; letter-spacing: -0.02em; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+.lede { color: var(--muted); font-size: 20px; max-width: 62ch; }
+.section { padding-block: 112px; display: flex; flex-direction: column; gap: 48px; }
+.section h2 { font-size: clamp(34px, 5vw, 56px); line-height: 1.08; max-width: 20ch; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* nav */
+header.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; }
+.brand svg { width: 28px; height: 28px; }
+nav.links { display: flex; align-items: center; gap: 28px; font-size: 15px; color: var(--muted); flex-wrap: wrap; }
+nav.links a { text-decoration: none; }
+nav.links a:hover { color: var(--fg); }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 20px; border-radius: 10px; font-weight: 500; font-size: 16px; text-decoration: none; background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--muted); filter: none; }
+nav.links .btn { color: var(--accent-ink); }
+nav.links .btn:hover { color: var(--accent-ink); }
+
+/* hero */
+.hero { padding-block: 96px 112px; display: flex; flex-direction: column; gap: 40px; position: relative; }
+.hero::before { content: ""; position: absolute; inset: auto -40vw -40% -40vw; height: 80%; background: radial-gradient(ellipse at 50% 100%, rgba(229,99,45,0.30), rgba(229,99,45,0) 65%); pointer-events: none; z-index: -1; }
+.hero h1 { font-size: clamp(42px, 7.4vw, 92px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 400; max-width: 17ch; }
+.hero .sub { font-size: clamp(20px, 2.4vw, 28px); color: var(--accent); max-width: 34ch; line-height: 1.35; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* core idea band */
+.band-wrap { background: var(--band); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
+.band { padding-block: 112px; display: flex; flex-direction: column; gap: 36px; }
+.band .eyebrow { color: var(--band-ink); }
+.band h2 { font-size: clamp(44px, 8vw, 104px); line-height: 1.02; letter-spacing: -0.04em; color: var(--band-ink); max-width: 14ch; }
+.band p { font-size: clamp(20px, 2.6vw, 32px); line-height: 1.3; color: var(--band-sub); font-weight: 500; letter-spacing: -0.01em; max-width: 36ch; }
+
+/* cards */
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card.hl { background: var(--accent-soft); border: 1.5px solid var(--accent); }
+.card .tag { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; color: var(--accent); text-transform: uppercase; }
+.card h3 { font-size: 26px; line-height: 1.2; }
+.card p, .card li { color: var(--muted); font-size: 17px; }
+.card ul { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+.callout { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 16px; padding: 24px 32px; font-size: 22px; line-height: 1.4; max-width: 60ch; }
+.callout b { color: var(--accent); font-weight: 500; }
+
+/* engine steps */
+.engine { display: flex; flex-direction: column; gap: 12px; }
+.step { display: grid; grid-template-columns: 56px minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 24px; align-items: center; padding: 18px 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.step.you { background: var(--accent-soft); border-color: var(--accent); }
+.step .n { font-family: var(--font-mono); color: var(--accent); font-size: 18px; letter-spacing: 0.05em; }
+.step h3 { font-size: 22px; line-height: 1.25; }
+.step p { color: var(--muted); font-size: 17px; }
+.engine-box { border: 2px solid var(--accent); background: var(--accent-soft); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.engine-box > .eyebrow { padding: 4px 12px; }
+@media (max-width: 720px) { .step { grid-template-columns: 40px 1fr; } .step p { grid-column: 2; } }
+
+/* flow */
+.flow { display: grid; gap: 16px; }
+.flow-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.node { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.node .tag { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+.node h3 { font-size: 20px; line-height: 1.25; }
+.node p { color: var(--muted); font-size: 15px; line-height: 1.45; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--font-mono); font-size: 13px; padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--fg); }
+.foundation { background: var(--accent-soft); border: 2px solid var(--accent); border-radius: 16px; padding: 24px 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+.foundation h3 { font-size: 22px; }
+.foundation p { color: var(--muted); font-size: 16px; margin-top: 6px; }
+@media (max-width: 900px) { .flow-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .flow-row { grid-template-columns: 1fr; } }
+
+/* compare table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 17px; }
+th, td { text-align: left; padding: 18px 24px; border-top: 1px solid var(--line); vertical-align: top; }
+thead th { border-top: 0; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+thead th.us { color: var(--accent); }
+tbody th { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; width: 20%; }
+td { color: var(--muted); }
+td.us { color: var(--fg); }
+.planned { font-family: var(--font-mono); font-size: 12px; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 2px 8px; margin-left: 8px; white-space: nowrap; }
+
+/* adoption */
+.path { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: stretch; }
+.path .arrow { align-self: center; color: var(--accent); font-size: 28px; font-family: var(--font-mono); }
+.path .card h3 { font-size: 34px; }
+.path .card p { font-size: 18px; }
+@media (max-width: 860px) { .path { grid-template-columns: 1fr; } .path .arrow { transform: rotate(90deg); justify-self: start; } }
+
+/* partner */
+.partner { background: var(--bg-deep); border: 1px solid var(--line); border-radius: 24px; padding: clamp(28px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; }
+.partner h2 { font-size: clamp(32px, 4.4vw, 52px); }
+.partner ul { padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.partner li { display: flex; flex-direction: column; gap: 2px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.partner li:last-child { border-bottom: 0; padding-bottom: 0; }
+.partner li b { font-weight: 500; font-size: 20px; }
+.partner li span { color: var(--muted); font-size: 16px; }
+.partner .left { display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
+@media (max-width: 860px) { .partner { grid-template-columns: 1fr; gap: 36px; } }
+
+footer { padding-block: 56px 72px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+footer .brand { color: var(--fg); font-size: 18px; }
+
+@media (max-width: 640px) {
+  .section { padding-block: 72px; gap: 36px; }
+  .band { padding-block: 72px; }
+  .hero { padding-block: 56px 72px; }
+  .card { padding: 24px; }
+  body { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.section,.band,footer{content-visibility:auto;contain-intrinsic-size:auto 700px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Nimzo home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="nzg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F38136"/><stop offset="1" stop-color="#EC7130"/></linearGradient></defs><rect x="0" y="0" width="23" height="23" rx="2.5" fill="#C1C1C1"/><rect x="9" y="9" width="23" height="23" rx="2.5" fill="#FFFFFF"/><rect x="4.5" y="4.5" width="23" height="23" rx="1.5" fill="#09090B"/><rect x="10" y="10" width="12" height="12" fill="url(#nzg)"/></svg>
+      Nimzo
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#problem">Why now</a>
+      <a href="#how">How it works</a>
+      <a href="#adoption">Adoption</a>
+      <a href="#proof">Proof</a>
+      <a class="btn" href="#partner">Become a design partner</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">IaC for the next era</p>
+      <h1>The operating system for cloud infrastructure of the next era.</h1>
+      <p class="sub">Deterministic, automated, end to end. No matter who or what writes the code.</p>
+      <div class="cta-row">
+        <a class="btn" href="#partner">Become a design partner</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="band-wrap">
+  <div class="wrap band" id="core">
+    <p class="eyebrow">The core idea</p>
+    <h2>Governance as the backbone</h2>
+    <p>Your best practices, written by your team or learned from your code, become deterministic checks. As agents act on your behalf, governance decides what they’re allowed to change, and every verdict is on record.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="section" id="problem">
+    <p class="eyebrow">The problem</p>
+    <h2>Infrastructure isn’t ready for AI.</h2>
+    <p class="lede">AI now writes infrastructure code from a ticket or a single prompt. Nothing in between checks that the result follows your rules before it reaches production.</p>
+    <div class="grid3">
+      <div class="card"><span class="tag">Scattered</span><h3>Best practices live everywhere</h3><p>In docs, wikis, Rego and PR reviews, or only in engineers’ heads.</p></div>
+      <div class="card"><span class="tag">Fragmented</span><h3>Tools built for people</h3><p>Every change is stitched across tools and waits on a person to review it.</p></div>
+      <div class="card"><span class="tag">Uncertain</span><h3>No reliable check</h3><p>Ask an LLM twice, get two answers. And infrastructure isn’t app code: a recreated database is gone.</p></div>
+    </div>
+    <div class="callout"><b>So:</b> AI can write the change, but deciding what ships needs the same verdict every time.</div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section" id="why">
+    <p class="eyebrow">Why determinism</p>
+    <h2>AI can guess how to build it, not whether it ships.</h2>
+    <div class="grid3" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+      <div class="card">
+        <span class="tag">Where AI’s variability helps</span>
+        <h3>Writing the change</h3>
+        <ul><li>Uses context to write code from any input</li><li>Proposes fixes and alternatives</li><li>Several good answers are fine</li></ul>
+      </div>
+      <div class="card hl">
+        <span class="tag">Where it can’t be tolerated</span>
+        <h3>Deciding what ships</h3>
+        <ul><li>Same change, same verdict, every time</li><li>Every verdict traceable to a readable rule</li><li>Approvers and auditors can replay it</li></ul>
+      </div>
+    </div>
+    <p class="lede">With Nimzo, plain English becomes Rego with pass and fail examples, and the Rego gives the same verdict every time.</p>
+    <div class="grid3" style="margin-top: 16px;">
+      <div class="card"><span class="tag">Instead of scattered context</span><h3>A company brain</h3><p>Your best practices, templates and conventions in one place, kept fresh and shared by people and agents.</p></div>
+      <div class="card hl"><span class="tag">Instead of guesses</span><h3>Deterministic checks</h3><p>The same input gets the same verdict, every time.</p></div>
+      <div class="card"><span class="tag">Instead of manual review</span><h3>End-to-end automation</h3><p>Changes flow from request to cloud on their own. A person steps in only for exceptions.</p></div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section" id="how">
+    <p class="eyebrow">How Nimzo works</p>
+    <h2>You define the best practices. Nimzo runs the rest, deterministically.</h2>
+    <div class="engine">
+      <div class="step you"><span class="n">01</span><h3>Define your best practices</h3><p>Write plain English, import Rego, or let Nimzo find the implicit ones in your code.</p></div>
+      <div class="engine-box">
+        <p class="eyebrow">Nimzo engine</p>
+        <div class="step"><span class="n">02</span><h3>Catches every request</h3><p>From agents, tickets, the IDE or people.</p></div>
+        <div class="step"><span class="n">03</span><h3>Decides what ships</h3><p>Same input, same verdict, every time.</p></div>
+        <div class="step"><span class="n">04</span><h3>Fixes what isn’t compliant</h3><p>Deterministically, with the rule and reason attached.</p></div>
+        <div class="step"><span class="n">05</span><h3>Asks for review only when needed</h3><p>Engineers see only the changes that need them.</p></div>
+        <div class="step"><span class="n">06</span><h3>Keeps everything current</h3><p>Up to date, tracked and compliant, with every change recorded.</p></div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px; margin-top: 40px;">
+      <h3 style="font-size: 28px;">From request to running infrastructure</h3>
+      <div class="flow" role="group" aria-label="Request to infrastructure flow">
+        <div class="node"><span class="tag">Triggers</span><div class="chips"><span class="chip">People</span><span class="chip">Agents</span><span class="chip">Git</span><span class="chip">Tickets</span><span class="chip">IDE</span><span class="chip">Drift</span><span class="chip">Slack / Teams</span></div></div>
+        <div class="flow-row">
+          <div class="node"><span class="tag">Step 1</span><h3>Agents</h3><p>Write deterministic code that follows your best practices.</p></div>
+          <div class="node"><span class="tag">Step 2</span><h3>Deployment</h3><p>Your CI/CD or our provisioning engine.</p></div>
+          <div class="node"><span class="tag">Step 3</span><h3>Cloud resources</h3><p>Provisioned, updated, healed.</p></div>
+          <div class="node"><span class="tag">Alongside</span><h3>Company brain</h3><p>Context, templates and conventions.</p></div>
+        </div>
+        <div class="foundation">
+          <div><h3>Governance engine</h3><p>Every step checked against your best practices. Same input, same verdict, every time.</p></div>
+          <div><h3>People · explicit</h3><p>Best practices your team writes down.</p></div>
+          <div><h3>Your code · implicit</h3><p>Best practices Nimzo learns from what you already run.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section" id="ci">
+    <p class="eyebrow">Why not just CI</p>
+    <h2>Why not just add checks to CI?</h2>
+    <p class="lede">CI can run deterministic checks. The difference is who writes them, what context they see, and what happens when one fails.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th></th><th>CI with scanners</th><th class="us">Nimzo</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Writing checks</th><td>Someone writes and maintains every policy by hand</td><td class="us">Drafted from plain English and your repos, with pass and fail examples</td></tr>
+          <tr><th scope="row">Context</th><td>Each check sees only the file or plan in front of it</td><td class="us">The company brain supplies templates, modules and conventions</td></tr>
+          <tr><th scope="row">When a check fails</th><td>The build fails and someone fixes it</td><td class="us">The change is fixed, with proof that it now passes</td></tr>
+          <tr><th scope="row">Agents</th><td>Checks run only after code is pushed</td><td class="us">Agents get the same checks while they write, through MCP</td></tr>
+          <tr><th scope="row">Live cloud</th><td>Out of scope</td><td class="us">Drift goes back to code through the same engine<span class="planned">planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section" id="adoption">
+    <p class="eyebrow">Adoption path</p>
+    <h2>Rolls out without blocking anyone.</h2>
+    <div class="path">
+      <div class="card"><span class="tag">Week 1</span><h3>Observe</h3><p>Nothing blocks. See the real compliance state of every incoming change.</p></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="card"><span class="tag">Weeks 2–4</span><h3>Warn</h3><p>The gate comments on pull requests instead of blocking them.</p></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="card hl"><span class="tag">Week 5 onward</span><h3>Enforce</h3><p>Turn on enforcement rule by rule, once violations drop.</p></div>
+    </div>
+    <div class="callout">Only exceptions reach the Inbox. A healthy setup is an Inbox that gets quieter over time.</div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section" id="proof">
+    <p class="eyebrow">Proof from your own code</p>
+    <h2>Justify it to your manager without booking a meeting.</h2>
+    <div class="grid3">
+      <div class="card"><span class="tag">From day one</span><h3>Your audit result</h3><p>Where your code stands against your own best practices, ready to paste into a message.</p></div>
+      <div class="card"><span class="tag">Before you commit</span><h3>Try it on one repo</h3><p>See Nimzo’s verdicts on your own pull requests, before anyone has to take our word for it.</p></div>
+      <div class="card"><span class="tag">Measure it</span><h3>Before and after</h3><p>An ROI framework that measures the gains for your own team, with real numbers.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="partner" style="padding-top: 24px;">
+    <div class="partner">
+      <div class="left">
+        <p class="eyebrow">Design partners</p>
+        <h2>Help shape the first version of Nimzo.</h2>
+        <p class="lede">Nimzo starts with governance: the checks every infrastructure change has to pass. We are working with a small group of platform and infrastructure teams to decide what comes next, from automation to agents, based on what they need.</p>
+        <a class="btn" href="#partner" id="partner-cta">Become a design partner</a>
+      </div>
+      <ul>
+        <li><b>Start with governance</b><span>Your best practices become deterministic checks on your own repos.</span></li>
+        <li><b>Built with Brainboard experience</b><span>From the team behind Brainboard, with years of Terraform, Azure and AWS work behind it.</span></li>
+        <li><b>You set the roadmap</b><span>Partners decide what is built after governance, and see it first.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="0" y="0" width="23" height="23" rx="2.5" fill="#C1C1C1"/><rect x="9" y="9" width="23" height="23" rx="2.5" fill="#FFFFFF"/><rect x="4.5" y="4.5" width="23" height="23" rx="1.5" fill="#09090B"/><rect x="10" y="10" width="12" height="12" fill="#EC7130"/></svg>
+        Nimzo
+      </a>
+      <span>IaC for the next era. Built by the team behind Brainboard.</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
