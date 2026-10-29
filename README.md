@@ -29,6 +29,6 @@ npm run dev
 
 ## Before launch
 
-- Point the "Become a design partner" buttons at a real contact link or booking page. They currently scroll to the section.
+- The Log in and Sign up buttons point to `https://app.nimzo.com/login` and `https://app.nimzo.com/signup`. Change them in `index.src.html` if the app lives elsewhere.
 - Replace `https://nimzo.com` with the real domain (canonical, Open Graph image, sitemap).
 - If you later add scripts, images from other hosts or analytics, widen the Content-Security-Policy in `vercel.json`.
