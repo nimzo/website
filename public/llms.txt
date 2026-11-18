@@ -8,6 +8,15 @@ This file is generated from the site's source content. It is a curated index for
 
 - [Home](https://nimzo.com/): Primary overview of the site.
 
+## Blog
+
+- [Blog index](https://nimzo.com/blog): Practical guides on Terraform, policy as code and IaC security.
+- [How to review a Terraform plan before you apply](https://nimzo.com/blog/how-to-review-terraform-plan): How to review a Terraform plan: save it with -out, read the +, -, ~ and -/+ symbols, catch replacements and destroys, and check terraform show -json.
+- [IaC scanning compared: Checkov, tfsec, KICS, Terrascan](https://nimzo.com/blog/iac-security-scanners-compared): IaC scanning compared: Checkov, tfsec, KICS, Terrascan and Trivy. Rule formats, coverage, maintainers and current status, plus which scanner to choose.
+- [Open Policy Agent (OPA) for Terraform: a practical guide](https://nimzo.com/blog/open-policy-agent-terraform): Learn how to use Open Policy Agent with Terraform: export plan JSON, write Rego rules, run Conftest in CI, and unit test your policies before apply.
+- [Terraform validate vs TFLint vs policy checks](https://nimzo.com/blog/terraform-validate-vs-tflint): TFLint, terraform validate and policy checks catch different problems. See what each one finds and where to run it: locally, in pre-commit, or in CI.
+- [What is policy as code? Examples and tools](https://nimzo.com/blog/what-is-policy-as-code): Policy as code turns security and compliance rules into code that checks every change. See real examples and compare OPA, Conftest, Kyverno and Sentinel.
+
 ## Discovery
 
 - [Sitemap](https://nimzo.com/sitemap-index.xml): Complete search-engine sitemap, if available.

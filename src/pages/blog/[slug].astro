@@ -1,0 +1,116 @@
+---
+import { render } from 'astro:content';
+import blogHtml from '../../html/blog.html?raw';
+import { getPosts, tagSlug, tagLabel, formatDate, esc } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, author, tags } = post.data;
+const url = `https://nimzo.com/blog/${post.data.slug}`;
+
+// Header, footer and head assets are taken from the exported Blog page so they match the rest of the site.
+const header = blogHtml
+  .match(/<header[\s\S]*?<\/header>/)![0]
+  .replace('border-transparent bg-transparent', 'border-ploy-border-primary bg-ploy-background-primary');
+const footer = blogHtml.match(/<footer[\s\S]*?<\/footer>/)![0];
+const icon = blogHtml.match(/<link rel="icon"[^>]*>/)![0];
+const css = blogHtml.match(/<link rel="stylesheet" href="\/_ploy_static[^>]*>/)![0];
+
+const ld = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: date.toISOString(),
+  author: { '@type': 'Organization', name: author },
+  publisher: { '@type': 'Organization', name: 'Nimzo', url: 'https://nimzo.com' },
+  mainEntityOfPage: url,
+});
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <Fragment set:html={icon} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" />
+    <Fragment set:html={css} />
+    <title>{title} | Nimzo</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={url} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Nimzo" />
+    <meta property="og:url" content={url} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={ld} />
+    <style is:global>
+      .post { max-width: 760px; margin: 0 auto; padding: 8rem 1.25rem 6rem; }
+      @media (min-width: 640px) { .post { padding: 10rem 2rem 8rem; } }
+      .article { color: #c8c8cb; font-size: 1.05rem; line-height: 1.75; }
+      .article > * + * { margin-top: 1.25rem; }
+      .article h2 { font-family: var(--font-heading); color: #f5f5f4; font-size: 1.75rem; line-height: 1.2; font-weight: 500; letter-spacing: -0.02em; margin-top: 3rem; }
+      .article h3 { font-family: var(--font-heading); color: #f5f5f4; font-size: 1.25rem; line-height: 1.3; font-weight: 500; margin-top: 2rem; }
+      .article a { color: #e8692f; text-decoration: underline; text-underline-offset: 3px; }
+      .article a:hover { color: #ee7f4c; }
+      .article strong { color: #f5f5f4; font-weight: 600; }
+      .article ul, .article ol { padding-left: 1.5rem; }
+      .article ul { list-style: disc; }
+      .article ol { list-style: decimal; }
+      .article li + li { margin-top: 0.4rem; }
+      .article code { font-family: var(--font-mono); font-size: 0.88em; background: #232325; border: 1px solid #333336; border-radius: 6px; padding: 0.1em 0.35em; color: #f5f5f4; }
+      .article pre { background: #141416 !important; border: 1px solid #333336; border-radius: 10px; padding: 1rem 1.25rem; overflow-x: auto; font-size: 0.875rem; line-height: 1.6; }
+      .article pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+      .article table { display: block; overflow-x: auto; border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+      .article th, .article td { border: 1px solid #333336; padding: 0.6rem 0.8rem; text-align: left; vertical-align: top; }
+      .article th { background: #232325; color: #f5f5f4; font-weight: 500; }
+    </style>
+  </head>
+  <body>
+    <div class="min-h-screen bg-ploy-background-primary text-ploy-text-primary">
+      <Fragment set:html={header} />
+      <main>
+        <article class="post">
+          <a href="/blog" class="font-mono text-[0.8rem] text-ploy-text-secondary transition-colors hover:text-ploy-text-primary">← Blog</a>
+          <div class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.8rem] text-ploy-neutral-primary-300">
+            {tags.map((t) => <span>{tagLabel(tagSlug(t))}</span>)}
+            <span>{formatDate(date)}</span>
+            <span>{author}</span>
+          </div>
+          <h1 class="font-heading typography-heading text-balance mt-4 text-4xl sm:text-5xl leading-[1.1]">{title}</h1>
+          <div class="article mt-10"><Content /></div>
+        </article>
+      </main>
+      <Fragment set:html={footer} />
+    </div>
+    <script is:inline>
+      // The exported header's mobile menu is a React component; this keeps it working on static article pages.
+      (function () {
+        var btn = document.querySelector('header button[aria-label="Open menu"]');
+        if (!btn) return;
+        var links = Array.from(document.querySelectorAll('header nav a'));
+        var panel = document.createElement('div');
+        panel.className = 'border-t border-ploy-border-primary bg-ploy-background-primary md:hidden';
+        panel.hidden = true;
+        panel.innerHTML = '<div class="mx-auto flex w-full max-w-[1200px] flex-col gap-1 px-5 py-4 sm:px-8">' +
+          links.map(function (a) { return '<a href="' + a.getAttribute('href') + '" class="py-2.5 text-base text-ploy-text-primary">' + a.textContent + '</a>'; }).join('') + '</div>';
+        document.querySelector('header').appendChild(panel);
+        btn.addEventListener('click', function () {
+          panel.hidden = !panel.hidden;
+          btn.setAttribute('aria-expanded', String(!panel.hidden));
+        });
+      })();
+    </script>
+  </body>
+</html>

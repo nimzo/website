@@ -1,5 +1,29 @@
 ---
-// Page markup is the exported static HTML, rendered verbatim.
+// The listing is the exported Blog page, filled with the posts from src/content/blog.
 import html from '../../html/blog.html?raw';
+import { getPosts, tagSlug, tagLabel, formatDate, esc } from '../../lib/posts';
+
+const posts = (await getPosts()).map((p) => ({
+  id: p.id,
+  slug: p.data.slug,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags.map(tagSlug),
+  pubDate: p.data.date.toISOString(),
+  draft: 0,
+}));
+
+// Same shape Astro uses to serialise island props.
+const wrap = (v: unknown): unknown =>
+  Array.isArray(v) ? [1, v.map(wrap)]
+  : v && typeof v === 'object' ? [0, Object.fromEntries(Object.entries(v).map(([k, x]) => [k, wrap(x)]))]
+  : [0, v];
+const props = esc(JSON.stringify({ posts: wrap(posts) }));
+
+const items = posts.map((p) => `<li class="border-b border-ploy-border-primary"><a href="/blog/${esc(p.slug)}" class="group grid gap-3 py-8 md:grid-cols-[1fr_auto] md:items-start md:gap-12"><div class="max-w-3xl"><div class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.8rem] text-ploy-neutral-primary-300">${p.tags.map((t) => `<span>${esc(tagLabel(t))}</span>`).join('')}</div><h2 class="font-heading typography-heading text-balance text-2xl sm:text-[1.75rem] leading-tight transition-colors group-hover:text-ploy-accent-primary">${esc(p.title)}</h2><p class="typography-body text-pretty text-base sm:text-[1.05rem] text-ploy-text-secondary mt-3">${esc(p.description)}</p></div><span class="font-mono text-[0.8rem] text-ploy-neutral-primary-300 md:pt-1">${formatDate(new Date(p.pubDate))}</span></a></li>`).join('');
+
+const out = html
+  .replace('props="{&quot;posts&quot;:[1,[]]}"', `props="${props}"`)
+  .replace(/<p class="typography-body[^"]*border-t border-ploy-border-primary pt-10">No articles yet\.<\/p>/, `<ul class="border-t border-ploy-border-primary">${items}</ul>`);
 ---
-<Fragment set:html={html} />
+<Fragment set:html={out} />
