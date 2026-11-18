@@ -16,6 +16,9 @@ This file is generated from the site's source content. It is a curated index for
 - [Open Policy Agent (OPA) for Terraform: a practical guide](https://nimzo.com/blog/open-policy-agent-terraform): Learn how to use Open Policy Agent with Terraform: export plan JSON, write Rego rules, run Conftest in CI, and unit test your policies before apply.
 - [Terraform validate vs TFLint vs policy checks](https://nimzo.com/blog/terraform-validate-vs-tflint): TFLint, terraform validate and policy checks catch different problems. See what each one finds and where to run it: locally, in pre-commit, or in CI.
 - [What is policy as code? Examples and tools](https://nimzo.com/blog/what-is-policy-as-code): Policy as code turns security and compliance rules into code that checks every change. See real examples and compare OPA, Conftest, Kyverno and Sentinel.
+- [Terraform drift detection: how to find and fix drift](https://nimzo.com/blog/terraform-drift-detection): Learn how Terraform drift detection works: find drift with plan -refresh-only, schedule checks in CI, and decide whether to revert or codify each change.
+- [Terraform MCP server: setup, tools and guardrails](https://nimzo.com/blog/terraform-mcp-server): What the Terraform MCP server does, how to run it with Claude or Cursor, which tools it exposes, and the guardrails agent-written Terraform still needs.
+- [Terraform best practices: modules, structure and tagging](https://nimzo.com/blog/terraform-best-practices): Terraform best practices for module and folder structure, default_tags tagging, remote state with locking, version pinning and naming, with HCL examples.
 
 ## Discovery
 
