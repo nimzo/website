@@ -2,12 +2,14 @@
   "name": "nimzo-site",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Marketing site for Nimzo",
   "scripts": {
-    "build": "node build.mjs",
-    "dev": "npx --yes serve dist -l 3000"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
   },
-  "devDependencies": {
-    "html-minifier-terser": "7.2.0"
+  "dependencies": {
+    "astro": "^5.0.0"
   }
 }

@@ -1,34 +1,31 @@
 # Nimzo website
 
-Static marketing site for Nimzo. No framework and no runtime JavaScript.
-
-## Structure
+Astro static site, deployed on Vercel.
 
 | Path | Purpose |
 | --- | --- |
-| `site/` | Static site export (home, `/blog`, 404, sitemaps, robots, llms.txt). Edit or replace this |
-| `build.mjs` | Copies `site/` into `dist/` |
-| `vercel.json` | Build settings, cache lifetimes, security headers and CSP |
-| `og.png`, `favicon.svg` | Social preview image and icon |
+| `src/pages/` | Astro routes: `/`, `/blog`, `404` |
+| `src/html/` | Page markup (exported HTML), rendered verbatim by the pages |
+| `public/` | Static assets: `_ploy_static/` bundles, robots, sitemaps, llms.txt, fonts, icons |
+| `api/form-submit.js` | Vercel function for the waitlist/demo form (`/_ploy/form-submit` is rewritten to it) |
+| `vercel.json` | Framework, rewrites, cache lifetimes, security headers and CSP |
 
 ## Develop
 
 ```bash
 npm install
-npm run build
 npm run dev
+npm run build
 ```
 
 ## Deploy to Vercel
 
-1. Push this folder to a GitHub repository.
-2. In Vercel, choose Add New, Project, and import the repository.
-3. Keep the detected settings. `vercel.json` sets the build command to `npm run build` and the output directory to `dist`.
-4. Add the production domain, then replace `https://nimzo.com` in `site/` with it.
+Import the repo in Vercel. Astro is auto-detected (`astro build`, output `dist`).
 
-## Before launch
+Set `FORM_WEBHOOK_URL` in the Vercel project settings: a webhook that accepts the JSON `{ formName, pageUrl, data, receivedAt }`. Without it the form returns an error.
 
-- The Log in and Sign up buttons point to `https://app.nimzo.com/login` and `https://app.nimzo.com/signup`. Change them in `site/index.html` if the app lives elsewhere.
-- Replace `https://nimzo.com` with the real domain (canonical, Open Graph image, sitemap).
-- If you later add scripts, images from other hosts or analytics, widen the Content-Security-Policy in `vercel.json`.
-- The waitlist/demo form POSTs JSON to `/_ploy/form-submit`, which only exists on Ploy hosting. Add a handler (e.g. a Vercel function at `api/` plus a rewrite) or sign-ups will show an error.
+## Notes
+
+- The pages still load the exported, pre-built client bundles in `public/_ploy_static/_astro/`. When editing those, rename the file (new hash) and update the references, so browsers fetch the new copy.
+- `https://nimzo.com` is set as `site` in `astro.config.mjs` and appears in the HTML, sitemaps and robots.txt. Replace it if the domain differs.
+- If you add scripts or assets from other hosts, widen the Content-Security-Policy in `vercel.json`.
