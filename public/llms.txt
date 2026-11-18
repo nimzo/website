@@ -6,9 +6,9 @@ This file is generated from the site's source content. It is a curated index for
 
 ## Core Pages
 
-- [Home](https://nimzo.com/): Primary overview of the site.
+- [Home](https://www.nimzo.com/): Primary overview of the site.
 
 ## Discovery
 
-- [Sitemap](https://nimzo.com/sitemap-index.xml): Complete search-engine sitemap, if available.
-- [Robots policy](https://nimzo.com/robots.txt): Crawler permissions for automated agents.
+- [Sitemap](https://www.nimzo.com/sitemap-index.xml): Complete search-engine sitemap, if available.
+- [Robots policy](https://www.nimzo.com/robots.txt): Crawler permissions for automated agents.

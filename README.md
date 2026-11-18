@@ -27,5 +27,5 @@ Set `FORM_WEBHOOK_URL` in the Vercel project settings: a webhook that accepts th
 ## Notes
 
 - The pages still load the exported, pre-built client bundles in `public/_ploy_static/_astro/`. When editing those, rename the file (new hash) and update the references, so browsers fetch the new copy.
-- `https://nimzo.com` is set as `site` in `astro.config.mjs` and appears in the HTML, sitemaps and robots.txt. Replace it if the domain differs.
+- `https://www.nimzo.com` is set as `site` in `astro.config.mjs` and appears in the HTML, sitemaps and robots.txt. Replace it if the domain differs.
 - If you add scripts or assets from other hosts, widen the Content-Security-Policy in `vercel.json`.
