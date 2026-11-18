@@ -92,7 +92,6 @@ nav.links .btn:hover { color: var(--accent-ink); }
 .hero::before { content: ""; position: absolute; inset: auto -40vw -40% -40vw; height: 80%; background: radial-gradient(ellipse at 50% 100%, rgba(229,99,45,0.30), rgba(229,99,45,0) 65%); pointer-events: none; z-index: -1; }
 .hero h1 { font-size: clamp(42px, 7.4vw, 92px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 400; max-width: 17ch; }
 .hero .sub { font-size: clamp(20px, 2.4vw, 28px); color: var(--accent); max-width: 34ch; line-height: 1.35; }
-.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* core idea band */
 .band-wrap { background: var(--band); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
@@ -194,20 +193,14 @@ footer .brand { color: var(--fg); font-size: 18px; }
       <a href="#how">How it works</a>
       <a href="#adoption">Adoption</a>
       <a href="#proof">Proof</a>
-      <a href="https://app.nimzo.com/login">Log in</a>
-      <a class="btn" href="https://app.nimzo.com/signup">Sign up</a>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero">
-      <p class="eyebrow">IaC for the next era</p>
+      <p class="eyebrow">Cloud infrastructure management with governance built in</p>
       <h1>Let developers build infra within your standards.</h1>
       <p class="sub">Deterministic, automated, end to end. No matter who or what writes the code.</p>
-      <div class="cta-row">
-        <a class="btn" href="https://app.nimzo.com/signup">Sign up</a>
-        <a class="btn ghost" href="https://app.nimzo.com/login">Log in</a>
-      </div>
     </section>
   </main>
 </div>
@@ -347,10 +340,6 @@ footer .brand { color: var(--fg); font-size: 18px; }
         <p class="eyebrow">Design partners</p>
         <h2>Help shape the first version of Nimzo.</h2>
         <p class="lede">Nimzo starts with governance: the checks every infrastructure change has to pass. We are working with a small group of platform and infrastructure teams to decide what comes next, from automation to agents, based on what they need.</p>
-        <div class="cta-row">
-          <a class="btn" href="https://app.nimzo.com/signup">Sign up</a>
-          <a class="btn ghost" href="https://app.nimzo.com/login">Log in</a>
-        </div>
       </div>
       <ul>
         <li><b>Start with governance</b><span>Your best practices become deterministic checks on your own repos.</span></li>
