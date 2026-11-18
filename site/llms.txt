@@ -1,0 +1,14 @@
+# Nimzo
+
+> Nimzo turns your infrastructure policies and best practices into deterministic checks that every change passes, whoever or whatever writes it.
+
+This file is generated from the site's source content. It is a curated index for AI assistants, not a crawler permissions file. For crawler permissions, see `/robots.txt`.
+
+## Core Pages
+
+- [Home](https://nimzo.com/): Primary overview of the site.
+
+## Discovery
+
+- [Sitemap](https://nimzo.com/sitemap-index.xml): Complete search-engine sitemap, if available.
+- [Robots policy](https://nimzo.com/robots.txt): Crawler permissions for automated agents.
